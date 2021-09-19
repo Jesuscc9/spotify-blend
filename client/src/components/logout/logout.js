@@ -7,6 +7,7 @@ export const Logout = () => {
       className="btn-danger absolute bottom-0"
       onClick={() => {
         Cookies.remove("spotifyAuthToken");
+        window.location = "/"
       }}
     >
       Log out

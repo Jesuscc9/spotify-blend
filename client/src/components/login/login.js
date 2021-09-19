@@ -11,7 +11,7 @@ export const Login = () => {
         redirectUri="http://localhost:3000/"
         clientID="77938d7cd1614389803467785283c056"
         scopes={[Scopes.userReadPrivate, Scopes.userReadEmail]}
-        btnClassName="btn-primary flex text-white"
+        btnClassName="btn-primary flex text-black"
         logoClassName="text-white w-45"
         onAccessToken={() => {
           window.location = "/";

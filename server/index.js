@@ -35,7 +35,16 @@ const room = {
 let rooms = [{}];
 
 io.on("connection", (socket) => {
-	console.log(socket.handshake.query.room)
+  const room = socket.handshake.query.room
+  console.log("New connection at: " + room)
+
+  socket.on("newUser", (e) => {
+    console.log(e)
+  })
+
+  socket.on("disconnect", () => {
+    console.log("bye")
+  })
 
   updateUsers = () => {
     io.sockets.emit("users", users);

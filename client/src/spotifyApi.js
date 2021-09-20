@@ -11,7 +11,6 @@ const config = {
 
 export const spotifyApi = {
 	me: async () => {
-		const data = (await axios.get("https://api.spotify.com/v1/me", config)).data
-		console.log(data)
+		return (await axios.get("https://api.spotify.com/v1/me", config)).data
 	}
 }

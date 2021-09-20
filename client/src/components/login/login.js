@@ -1,5 +1,4 @@
-import React, { useState } from "react";
-import { Redirect } from "react-router-dom";
+import React from "react";
 import { SpotifyAuth, Scopes } from "react-spotify-auth";
 import { GlobalStyles } from "./login.style";
 

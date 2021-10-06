@@ -16,7 +16,7 @@ const Blend = () => {
 		newSocket.emit("newUser", user)
   }, []);
 
-  return <div>{socket && <p>New blend on room: {room}</p>}</div>;
+  return <>{socket && <p>New blend on room: {room}</p>}</>;
 };
 
 export default Blend;

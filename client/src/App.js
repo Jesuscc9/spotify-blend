@@ -1,6 +1,6 @@
-import { BrowserRouter, Route, Switch } from "react-router-dom";
+import { BrowserRouter, Route, Switch, Redirect } from "react-router-dom";
 import { SpotifyApiContext } from "react-spotify-api";
-import { store } from "./redux/store";
+import { store } from "./store/store";
 import { Provider } from "react-redux";
 
 import Cookies from "js-cookie";
@@ -18,25 +18,15 @@ const App = () => {
         <BrowserRouter>
           <Switch>
             <Route exact path="/">
-              {token ? (
-                <SpotifyApiContext.Provider value={token}>
-                  <AppPage />
-                </SpotifyApiContext.Provider>
-              ) : (
-                <Home />
-              )}
+              {token ? <AppPage /> : <Home />}
             </Route>
+
             <Route exact path="/blend/:room">
-              {token ? (
-                <SpotifyApiContext.Provider value={token}>
-                  <Blend />
-                </SpotifyApiContext.Provider>
-              ) : (
-                <Home />
-              )}
+              {token ? <Blend /> : <Home />}
             </Route>
+
             <Route path="">
-              <h1>404 Not Found :(</h1>
+              <Redirect to="/" />
             </Route>
           </Switch>
         </BrowserRouter>

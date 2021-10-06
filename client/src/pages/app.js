@@ -1,30 +1,26 @@
 import React, { useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
 import { Redirect } from "react-router";
 import { Logout } from "../components/logout/logout";
-import { spotifyApi } from "../spotifyApi";
-import userActions from "../redux/user/actions";
+
+import { useDispatch } from "react-redux";
+import userActions from "../store/user/actions";
 
 const App = () => {
   const [roomId, setRoomId] = useState(false);
+
+  const handleClick = () => {
+    setRoomId(randomString(8));
+  };
 
   const dispatch = useDispatch();
 
   useEffect(() => {
     const fetchData = async () => {
-      dispatch(userActions.setUser(await spotifyApi.me()));
+      dispatch({type: userActions.SET_USER, payload: {}});
     };
 
-    try {
-      fetchData();
-    } catch (e) {
-      alert("e");
-    }
+    fetchData();
   }, []);
-
-  const handleClick = () => {
-    setRoomId(randomString(8));
-  };
 
   return (
     <div className="container mx-auto mt-10">

@@ -8,12 +8,12 @@ const Blend = () => {
 
   const [socket, setSocket] = useState();
 
-  const user = useSelector((state) => state.user.user);
+  const user = useSelector((state) => state.user);
 
   useEffect(() => {
     const newSocket = io(`http://localhost:3001/`, { query: `room=${room}` });
 		setSocket(newSocket)
-		newSocket.emit("newUser", user)
+		newSocket.emit("newUser", user.display_name)
   }, []);
 
   return <>{socket && <p>New blend on room: {room}</p>}</>;

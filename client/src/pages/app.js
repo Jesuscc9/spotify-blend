@@ -16,7 +16,7 @@ const App = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      dispatch({type: userActions.SET_USER, payload: {}});
+      dispatch({type: userActions.SET_USER});
     };
 
     fetchData();

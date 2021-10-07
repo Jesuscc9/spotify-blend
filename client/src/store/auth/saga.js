@@ -1,10 +1,9 @@
-import Cookies from "js-cookie";
+import authActions from "../auth/actions";
 import { call, put, takeEvery, takeLatest } from "redux-saga/effects";
-import { authActions } from "../auth/actions"
 import userActions from "../user/actions";
+import Cookies from "js-cookie";
 
 function* logout() {
-  // yield put(userActions.initialState())
   yield Cookies.remove("spotifyAuthToken");
   yield window.location = '/'
 }

@@ -2,7 +2,7 @@ import { call, put, takeEvery, takeLatest } from "redux-saga/effects";
 import { spotifyApi } from "../../spotifyApi";
 import userActions from "../user/actions";
 
-function* fetchUser(action) {
+function* fetchUser() {
   try {
     const user = yield call(spotifyApi.me);
     yield put(userActions.setUserData(user));

@@ -1,15 +1,14 @@
-import actions from "./actions";
+import authActions from "./actions";
 
-const initialState = {
-  auth: {},
-};
+const initialState = {};
 
 const reducer = (state = initialState, action) => {
-  const { payload, type } = action;
+  const { type } = action;
 
   switch (type) {
-    case actions.SET_USER:
-      return { ...state, ...payload.data };
+    case authActions.LOGOUT:
+      console.log({type})
+      return state;
     default:
       return state;
   }

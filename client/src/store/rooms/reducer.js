@@ -1,15 +1,13 @@
-import actions from "./actions";
+import roomActions from "./actions";
 
-const initialState = {
-  room: {},
-};
+const initialState = []
 
 const reducer = (state = initialState, action) => {
   const { payload, type } = action;
 
   switch (type) {
-    case actions.SET_ROOM:
-      return { ...state, ...payload.data };
+    case roomActions.UPDATE_ROOMS:
+      return [...payload.data ];
     default:
       return state;
   }

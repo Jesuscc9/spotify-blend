@@ -26,26 +26,16 @@ const io = socketIo(server, {
   },
 });
 
-const room = {
-  id: undefined,
-  activeUsers: 0,
-  users: [],
-};
-
 let rooms = [];
 
 io.on("connection", (socket) => {
   const roomId = socket.handshake.query.room;
 
   let roomIndex = rooms.findIndex((el) => el.id == roomId);
-
-  console.log("New connection at: " + roomId);
-
   let userIndex = 0;
 
   socket.on("newUser", (e) => {
-    // userId = e.id;
-    userId = e;
+    userId = e.id;
     console.log(userId);
     if (roomIndex > -1) {
       userIndex = rooms[roomIndex].users.length;
@@ -59,17 +49,18 @@ io.on("connection", (socket) => {
         users: [e],
       });
     }
-    console.log(rooms);
+    updateRooms();
   });
 
   socket.on("disconnect", () => {
     rooms[roomIndex].users.splice(userIndex, 1);
-    rooms[roomIndex].activeUsers--
-    console.log(rooms);
+    rooms[roomIndex].activeUsers--;
+    updateRooms();
   });
 
-  updateUsers = () => {
-    io.sockets.emit("users", users);
+  updateRooms = () => {
+    console.log(rooms);
+    io.sockets.emit("rooms", rooms);
   };
 });
 

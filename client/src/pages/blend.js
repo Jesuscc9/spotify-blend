@@ -6,6 +6,7 @@ import { Link } from "react-router-dom"
 import { useDispatch } from "react-redux";
 
 import userActions from "../store/user/actions";
+import roomsActions from "../store/rooms/actions";
 
 const Blend = () => {
   const { room } = useParams();
@@ -21,7 +22,10 @@ const Blend = () => {
       dispatch({ type: userActions.SET_USER });
       const newSocket = io(`http://localhost:3001/`, { query: `room=${room}` });
       setSocket(newSocket);
-      newSocket.emit("newUser", user.display_name);
+      newSocket.emit("newUser", user);
+      newSocket.on("rooms", (rooms) => {
+        dispatch(roomsActions.updateRooms(rooms))
+      })
     };
 
     fetchData();

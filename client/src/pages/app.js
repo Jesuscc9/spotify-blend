@@ -39,8 +39,6 @@ const App = () => {
           type="text"
           placeholder="Blend code..."
           className="mt-10 input-text"
-          id="username"
-          name="code"
           onChange={(e) => setInputValue(e.target.value)}
         />
         {roomId && <Redirect to={`/blend/${roomId}`} />}

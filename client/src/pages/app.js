@@ -7,6 +7,7 @@ import userActions from "../store/user/actions";
 
 const App = () => {
   const [roomId, setRoomId] = useState(false);
+  const [inputValue, setInputValue] = useState("")
 
   const handleClick = () => {
     setRoomId(randomString(8));
@@ -16,7 +17,7 @@ const App = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      dispatch({type: userActions.SET_USER});
+      dispatch({ type: userActions.SET_USER });
     };
 
     fetchData();
@@ -28,7 +29,22 @@ const App = () => {
       <button className="btn-primary mx-auto mt-10" onClick={handleClick}>
         Make blend!
       </button>
-      {roomId && <Redirect to={`/blend/${roomId}`} />}
+      <br />
+      <form onSubmit={(e) => {
+        e.preventDefault()
+        setRoomId(inputValue)
+      }}>
+        <h1 className="text-center">Join a blend</h1>
+        <input
+          type="text"
+          placeholder="Blend code..."
+          className="mt-10 input-text"
+          id="username"
+          name="code"
+          onChange={(e) => setInputValue(e.target.value)}
+        />
+        {roomId && <Redirect to={`/blend/${roomId}`} />}
+      </form>
       <Logout />
     </div>
   );

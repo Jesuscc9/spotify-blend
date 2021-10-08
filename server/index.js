@@ -19,32 +19,54 @@ app.use(express.json());
 
 const server = http.createServer(app);
 
-const io = socketIo(server,{
+const io = socketIo(server, {
   cors: {
-    origin: '*',
-    methods: ['GET', 'POST']
-  }
+    origin: "*",
+    methods: ["GET", "POST"],
+  },
 });
 
 const room = {
   id: undefined,
   activeUsers: 0,
-  users: []
-}
+  users: [],
+};
 
-let rooms = [{}];
+let rooms = [];
 
 io.on("connection", (socket) => {
-  const room = socket.handshake.query.room
-  console.log("New connection at: " + room)
+  const roomId = socket.handshake.query.room;
+
+  let roomIndex = rooms.findIndex((el) => el.id == roomId);
+
+  console.log("New connection at: " + roomId);
+
+  let userIndex = 0;
 
   socket.on("newUser", (e) => {
-    console.log(e)
-  })
+    // userId = e.id;
+    userId = e;
+    console.log(userId);
+    if (roomIndex > -1) {
+      userIndex = rooms[roomIndex].users.length;
+      rooms[roomIndex].users.push(e);
+      rooms[roomIndex].activeUsers++;
+    } else {
+      roomIndex = rooms.length;
+      rooms.push({
+        id: roomId,
+        activeUsers: 1,
+        users: [e],
+      });
+    }
+    console.log(rooms);
+  });
 
   socket.on("disconnect", () => {
-    console.log("bye")
-  })
+    rooms[roomIndex].users.splice(userIndex, 1);
+    rooms[roomIndex].activeUsers--
+    console.log(rooms);
+  });
 
   updateUsers = () => {
     io.sockets.emit("users", users);

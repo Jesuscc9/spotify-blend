@@ -1,36 +1,41 @@
-import { BrowserRouter, Route, Switch, Redirect } from "react-router-dom";
-import { SpotifyApiContext } from "react-spotify-api";
-import { store } from "./store/store";
-import { Provider } from "react-redux";
-
+import { BrowserRouter, Route, Switch } from "react-router-dom";
 import Cookies from "js-cookie";
-
-import Home from "./pages/home";
-import Blend from "./pages/blend";
-import { default as AppPage } from "./pages/app";
+import Login from "./pages/login";
+import { privateRoutes } from "./routes/private";
+import { useEffect } from "react";
+import { useDispatch } from "react-redux";
+import authActions from "./store/auth/actions"
 
 const App = () => {
+
+  const dispatch = useDispatch()
+
   const token = Cookies.get("spotifyAuthToken");
+
+  useEffect(() => {
+    dispatch(authActions.me());
+  }, [])
 
   return (
     <div className="App">
-      <Provider store={store}>
-        <BrowserRouter>
-          <Switch>
-            <Route exact path="/">
-              {token ? <AppPage /> : <Home />}
-            </Route>
-
-            <Route exact path="/blend/:room">
-              {token ? <Blend /> : <Home />}
-            </Route>
-
-            <Route path="">
-              <Redirect to="/" />
-            </Route>
-          </Switch>
-        </BrowserRouter>
-      </Provider>
+      <BrowserRouter>
+        <Switch>
+          {token ? (
+            <>
+              {privateRoutes.map((route, i) => (
+                <Route
+                  exact
+                  key={i}
+                  path={route.path}
+                  component={route.component}
+                />
+              ))}
+            </>
+          ) : (
+            <Route exact path="/" component={Login}></Route>
+          )}
+        </Switch>
+      </BrowserRouter>
     </div>
   );
 };

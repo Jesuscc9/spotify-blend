@@ -1,13 +1,17 @@
 import authActions from "./actions";
 
-const initialState = {};
+const initialState = {
+  isAuth: false,
+  data: {}
+};
 
 const reducer = (state = initialState, action) => {
-  const { type } = action;
+  const { payload, type } = action;
 
   switch (type) {
+    case authActions.SET_DATA:
+      return {...state, isAuth: true, data: payload}
     case authActions.LOGOUT:
-      console.log({type})
       return state;
     default:
       return state;

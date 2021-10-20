@@ -16,11 +16,11 @@ const App = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    const fetchData = async () => {
-      dispatch({ type: userActions.SET_USER });
-    };
+    // const fetchData = async () => {
+    //   dispatch({ type: userActions.SET_USER });
+    // };
 
-    fetchData();
+    // fetchData();
   }, []);
 
   return (

@@ -9,8 +9,8 @@ export const privateRoutes = [
 		component: App,
 	}, {
 		name: 'Blend',
-		path: '/blend/:room',
-		to: '/blend/:room',
+		path: '/blend/:roomId',
+		to: '/blend/:roomId',
 		component: Blend
 	}
 ]

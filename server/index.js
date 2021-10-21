@@ -33,6 +33,7 @@ io.on("connection", (socket) => {
 
   let roomIndex = rooms.findIndex((el) => el.id == roomId);
   let userIndex = 0;
+  let userId = ""
 
   socket.on("newUser", (e) => {
     userId = e.id;
@@ -53,14 +54,19 @@ io.on("connection", (socket) => {
   });
 
   socket.on("disconnect", () => {
+    userIndex = rooms[roomIndex].users.findIndex((user) => user.id == userId)
     rooms[roomIndex].users.splice(userIndex, 1);
     rooms[roomIndex].activeUsers--;
     updateRooms();
   });
 
   updateRooms = () => {
-    console.log(rooms);
-    console.log(rooms[roomIndex])
+    const users = rooms[roomIndex].users.map((user) => (user.id))
+    console.log({
+      id: rooms[roomIndex].id,
+      activeUsers: rooms[roomIndex].activeUsers,
+      users,
+    })
     io.sockets.emit("updateRoom", rooms[roomIndex]);
   };
 });

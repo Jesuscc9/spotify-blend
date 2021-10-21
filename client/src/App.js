@@ -2,11 +2,10 @@ import { BrowserRouter, Route, Switch } from "react-router-dom";
 import Cookies from "js-cookie";
 import Login from "./pages/login";
 import { privateRoutes } from "./routes/private";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import authActions from "./store/auth/actions";
 import { createBrowserHistory } from "history";
-import roomActions from "./store/room/actions";
 
 export const history = createBrowserHistory();
 

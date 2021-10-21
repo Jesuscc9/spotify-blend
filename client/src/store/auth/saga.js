@@ -1,7 +1,10 @@
 import authActions from "../auth/actions";
+
 import { call, put, takeEvery, takeLatest } from "redux-saga/effects";
 import Cookies from "js-cookie";
 import { spotifyApi } from "../../spotifyApi"
+import { sagaWrapper } from "../../helpers/redux";
+import { history } from "../../App";
 
 function* me(){
   const response = yield call(spotifyApi.me);
@@ -10,12 +13,12 @@ function* me(){
 
 function* logout() {
   yield Cookies.remove("spotifyAuthToken");
-  yield window.location = '/'
+  yield history.push('/')
 }
 
 function* authSaga() {
-  yield takeLatest(authActions.ME, me);
-  yield takeEvery(authActions.LOGOUT, logout);
+  yield takeLatest(authActions.ME, sagaWrapper(me));
+  yield takeLatest(authActions.LOGOUT, sagaWrapper(logout));
 }
 
 export default authSaga;

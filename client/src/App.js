@@ -2,19 +2,22 @@ import { BrowserRouter, Route, Switch } from "react-router-dom";
 import Cookies from "js-cookie";
 import Login from "./pages/login";
 import { privateRoutes } from "./routes/private";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
-import authActions from "./store/auth/actions"
+import authActions from "./store/auth/actions";
+import { createBrowserHistory } from "history";
+import roomActions from "./store/room/actions";
+
+export const history = createBrowserHistory();
 
 const App = () => {
-
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
 
   const token = Cookies.get("spotifyAuthToken");
 
   useEffect(() => {
     dispatch(authActions.me());
-  }, [])
+  }, []);
 
   return (
     <div className="App">

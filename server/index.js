@@ -60,7 +60,8 @@ io.on("connection", (socket) => {
 
   updateRooms = () => {
     console.log(rooms);
-    io.sockets.emit("rooms", rooms);
+    console.log(rooms[roomIndex])
+    io.sockets.emit("updateRoom", rooms[roomIndex]);
   };
 });
 

@@ -5,48 +5,41 @@ import io from "socket.io-client";
 import { Link } from "react-router-dom";
 import { useDispatch } from "react-redux";
 
-import userActions from "../store/user/actions";
-import roomsActions from "../store/rooms/actions";
+import roomActions from "../store/room/actions";
+
+import { socket } from "../service/socket";
 
 const Blend = () => {
   const { room } = useParams();
 
-  const [socket, setSocket] = useState();
-
   const user = useSelector((state) => state.auth.data);
+  const [loading, setLoading] = useState(true);
 
   const dispatch = useDispatch();
 
   useEffect(() => {
     if (!user.display_name) return;
+    socket.connect({
+      user,
+      roomId: room,
+      onUpdateRoom: (room) => dispatch(roomActions.updateRoom(room)),
+    });
+    setLoading(false);
 
-    const fetchData = async () => {
-      const newSocket = io(`http://localhost:3001/`, { query: `room=${room}` });
-      setSocket(newSocket);
-      newSocket.emit("newUser", user);
-      newSocket.on("rooms", (rooms) => {
-        dispatch(roomsActions.updateRooms(rooms));
-      });
+    return () => {
+      socket.disconnect();
     };
-
-    fetchData();
-  }, [user]);
+  }, [user, room]);
 
   return (
-    <>
-      <div className="container mx-auto mt-10">
-        <Link to="/" className="btn-primary">
-          Back
-        </Link>
-        <br />
-        <br />
-        {socket ? (
-          <div>New blend on room: {room}</div>
-        ) : (
-          <div>Cargando...</div>
-        )}
-      </div>
-    </>
+    <div className="container mx-auto mt-10">
+      <Link to="/" className="btn-primary">
+        Back
+      </Link>
+      <br />
+      <br />
+      {!loading ? <div>New blend on room: {room}</div> : <div>Cargando...</div>}
+    </div>
   );
 };
 

@@ -5,36 +5,34 @@ import Cookies from "js-cookie";
 
 /*  SAFE SAGA CALL FOR ERROR HANDLING */
 export function sagaWrapper(sagaFn, errorAction) {
-    return function* (){
-        try {
+  return function* () {
+    try {
+      return yield call(sagaFn, arguments[0]);
+    } catch (error) {
+      console.log("Error:", error);
 
-            return yield call(sagaFn, arguments[0]);
+      if (error.response?.status === 401 && Cookies.get("auth")) {
+        yield Cookies.remove("auth", {
+          path: "/",
+          domain: window.location.hostname,
+        });
+      }
 
-        } catch (error) {
-            console.log("Error:", error)
-
-            if (error.response?.status === 401 && Cookies.get('auth')) {
-                yield Cookies.remove('auth', {
-                    path: '/',
-                    domain: window.location.hostname
-                })
-            }
-
-            if (error.response) {
-                if (error.response.status === 401) {
-                    yield put(authActions.logout());
-                } else {
-                    // yield put(snackbarActions.add('error', error.response.data.message ? error.response.data.message : 'Ocurrió un error'));
-                }
-            }
-
-            if (error.message === "Network Error") {
-                // yield put(snackbarActions.add('error', 'Error de red, verifica tu conexión'));
-            }
-
-            if (errorAction && error.message !== "Operation canceled") {
-                yield put(errorAction)
-            }
+      if (error.response) {
+        if (error.response.status === 401) {
+          yield put(authActions.logout());
+        } else {
+          // yield put(snackbarActions.add('error', error.response.data.message ? error.response.data.message : 'Ocurrió un error'));
         }
+      }
+
+      if (error.message === "Network Error") {
+        // yield put(snackbarActions.add('error', 'Error de red, verifica tu conexión'));
+      }
+
+      if (errorAction && error.message !== "Operation canceled") {
+        yield put(errorAction);
+      }
     }
+  };
 }

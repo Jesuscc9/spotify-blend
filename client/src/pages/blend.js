@@ -5,8 +5,8 @@ import { Link } from "react-router-dom";
 import { useDispatch } from "react-redux";
 
 import roomActions from "../store/room/actions";
-
-import { socket } from "../service/socket";
+import { Particles } from "../components/particles/particles";
+import { socket } from "../services/socket";
 
 const Blend = () => {
   const { roomId } = useParams();
@@ -14,10 +14,8 @@ const Blend = () => {
   const user = useSelector((state) => state.auth.data);
   const room = useSelector((state) => state.room);
 
-
-  useEffect(() => console.log(room),[room])
-
   const [loading, setLoading] = useState(true);
+  const [makeBlend, setMakeBlend] = useState(false);
 
   const dispatch = useDispatch();
 
@@ -35,21 +33,51 @@ const Blend = () => {
     };
   }, [user, roomId]);
 
-  const defaultUserImg = "http://dissoftec.com/DefaultUserImage.png"
-
   return (
     <div className="container mx-auto mt-10">
-      <Link to="/" className="btn-primary"> Back </Link>
+      <Particles attract={makeBlend} />
+      <Link to="/" className="btn-primary">
+        Back
+      </Link>
+      {!loading ? (
+        <>
+          <div className="my-10">New blend on room: {roomId}</div><button className="btn-primary" onClick={() => setMakeBlend(!makeBlend)}>
+            Make Blend
+          </button>
+          {room.users.length && (
+            <div className="my-20 flex justify-between p-20">
+              {room.users.map((user, i) => (
+                <div key={i}>
+                  <div className="flex justify-between">
+                    <img
+                      src={user.images[0].url}
+                      className="rounded-full w-20 h-20 mb-10"
+                    />
+                  </div>
+
+                  <ul className="hidden">
+                    {user.topTracks.items.map((track, i) => (
+                      <li key={i}>
+                        <a
+                          href={track.external_urls.spotify}
+                          target="_blank"
+                          className="underline"
+                        >
+                          {track.name}
+                        </a>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              ))}
+            </div>
+          )}
+        </>
+      ) : (
+        <div>Cargando...</div>
+      )}
       <br />
-      <br />
-      {!loading ? <div>New blend on room: {roomId}</div> : <div>Cargando...</div>}
-      {room.users.length &&
-      <div className="flex justify-between my-20 border">
-        {room.users.map((user, i) => (
-          <img src={user.images[0]?.url ? user.images[0].url : defaultUserImg} key={i} className="rounded-full w-10"/>
-        ))}
-      </div>
-}
+
     </div>
   );
 };

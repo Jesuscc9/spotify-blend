@@ -9,7 +9,7 @@ export const Logout = () => {
 
   return (
     <button className="btn-danger absolute bottom-10" onClick={() => {
-      dispatch({type: authActions.LOGOUT})
+      dispatch(authActions.logout())
     }}>
       Log out
     </button>

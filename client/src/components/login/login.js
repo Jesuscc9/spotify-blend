@@ -9,7 +9,7 @@ export const Login = () => {
       <SpotifyAuth
         redirectUri="http://localhost:3000/"
         clientID="77938d7cd1614389803467785283c056"
-        scopes={[Scopes.userReadPrivate, Scopes.userReadEmail]}
+        scopes={[Scopes.userReadPrivate, Scopes.userReadEmail, Scopes.userTopRead]}
         btnClassName="btn-primary flex text-black"
         logoClassName="text-white w-45"
         onAccessToken={() => {

@@ -21,5 +21,6 @@ export const socket = {
   },
   disconnect: () => {
     socket.socketInstace.disconnect();
+    socket.socketInstace = undefined;
   },
 };

@@ -7,6 +7,7 @@ import { useDispatch } from "react-redux";
 import roomActions from "../store/room/actions";
 import { Particles } from "../components/particles/particles";
 import { socket } from "../services/socket";
+import { ProfileImage } from "../components/profileImage/profileImage";
 
 const Blend = () => {
   const { roomId } = useParams();
@@ -48,14 +49,11 @@ const Blend = () => {
             <div className="my-20 flex justify-between p-20">
               {room.users.map((user, i) => (
                 <div key={i}>
-                  <div className="flex justify-between">
-                    <img
-                      src={user.images[0].url}
-                      className="rounded-full w-20 h-20 mb-10"
-                    />
+                  <div className="absolute w-screen h-screen top-0 left-0 flex justify-between items-center px-40" style={{zIndex: -20}}>
+                    <ProfileImage src={user.images[0].url} attract={makeBlend}/>
                   </div>
 
-                  <ul className="hidden">
+                  <ul className="overflow-y-scroll h-60 hidden">
                     {user.topTracks.items.map((track, i) => (
                       <li key={i}>
                         <a

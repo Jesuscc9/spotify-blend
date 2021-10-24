@@ -8,7 +8,7 @@ export const Particles = ({ attract }) => {
     const el = document.getElementById("particlesContainer");
     if (!el) return;
     animateParticles.el = el
-    animateParticles.particlesCount = 100;
+    animateParticles.particlesCount = 120;
     animateParticles.init();
   }, [])
 

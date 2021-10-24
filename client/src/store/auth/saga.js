@@ -15,10 +15,7 @@ function* me() {
 }
 
 function* logout() {
-  yield Cookies.remove("spotifyAuthToken", {
-    path: "/",
-    domain: window.location.hostname,
-  });
+  yield Cookies.remove("spotifyAuthToken");
   yield history.push("/");
 }
 

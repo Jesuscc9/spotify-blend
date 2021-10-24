@@ -1,4 +1,4 @@
-import { BrowserRouter, Route, Switch } from "react-router-dom";
+import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import Cookies from "js-cookie";
 import Login from "./pages/login";
 import { privateRoutes } from "./routes/private";
@@ -20,24 +20,24 @@ const App = () => {
 
   return (
     <div className="App">
-      <BrowserRouter>
-        <Switch>
-          {token ? (
-            <>
-              {privateRoutes.map((route, i) => (
-                <Route
-                  exact
-                  key={i}
-                  path={route.path}
-                  component={route.component}
-                />
-              ))}
-            </>
-          ) : (
+      <Router>
+        {token ? (
+          <Switch>
+            {privateRoutes.map((route, i) => (
+              <Route
+                exact
+                key={i}
+                path={route.path}
+                component={route.component}
+              />
+            ))}
+          </Switch>
+        ) : (
+          <Switch>
             <Route exact path="/" component={Login}></Route>
-          )}
-        </Switch>
-      </BrowserRouter>
+          </Switch>
+        )}
+      </Router>
     </div>
   );
 };

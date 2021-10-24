@@ -6,7 +6,7 @@ export const ProfileImage = ({ src, attract, side }) => {
 	return (
 		<>
 			<GlobalStyles />
-			<ImageContainer className={attract && "attracted-containers"} side={side}>
+			<ImageContainer className={attract && "attracted-container"} side={side}>
 				<div className="image-container">
 					<img src={src} className={attract && `attracted-image-${side ? "left" : "right"}`} />
 				</div>

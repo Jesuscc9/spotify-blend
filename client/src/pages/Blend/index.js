@@ -48,8 +48,8 @@ export const Blend = () => {
             <div className="my-20 flex justify-between p-20">
               {room.users.map((user, i) => (
                 <div key={i}>
-                  <div className="absolute w-screen h-screen top-0 left-0 flex justify-between items-center px-40" style={{zIndex: -20}}>
-                    <ProfileImage src={user.images[0].url} attract={makeBlend}/>
+                  <div className="absolute w-screen h-screen top-0 left-0 flex justify-between items-center px-40" style={{ zIndex: -20 }}>
+                    <ProfileImage src={user.images[0].url} attract={makeBlend} side={i % 2 == 0 ? true : false} />
                   </div>
 
                   <ul className="overflow-y-scroll h-60 hidden">

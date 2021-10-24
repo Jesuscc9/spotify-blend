@@ -52,13 +52,13 @@ const attractedContainer = keyframes`
 	}
 	`;
 
-const attractedImage = keyframes`
+const clipImage = keyframes`
 	0%{
 		clip: rect(0px,20rem,20rem,0px);
-	} 80%{
+	} 50%{
 		clip: rect(0px,20rem,20rem,0px);
 	} 100%{
-		clip: rect(0px,10rem,20rem,0px) !important;
+		clip: rect(0px,10rem,20rem,0px);
 	}
 	
 	`
@@ -73,11 +73,18 @@ export const GlobalStyles = createGlobalStyle`
 		/* animation: ${infiniteRotating} 16s infinite linear; */
 	}
 	
-	.attracted-image{
-		animation: ${attractedImage} 3s, ${infiniteRotatingLeft} 16s infinite linear !important;
-		/* clip: rect(0px,10rem,20rem,0px) !important; */
+	.attracted-image-right{
+		clip: rect(0px,10rem,20rem,0px);
+		animation: ${clipImage} 2s, ${infiniteRotatingLeft} 16s infinite linear !important;
 		/* transform: rotate(0deg); */
 		/* animation: none !important; */
+	}
+
+	.attracted-image-left{
+		clip: rect(0px,10rem,20rem,0px);
+		animation: ${clipImage} 2s, ${infiniteRotatingLeft} 16s infinite linear !important;
+		/* transform: rotate(0deg); */
+
 	}
 	
 	.image-container{
@@ -92,7 +99,7 @@ export const ImageContainer = styled.div`
   transition: all 1s;
   position: absolute;
   top: 36%;
-  left: 12%;
+  left: ${(props) => props.side ? "12%" : "calc(78% - 10rem)"};
   width: 20rem;
   height: 26rem;
   /* border: 1px solid white; */
@@ -107,8 +114,8 @@ export const ImageContainer = styled.div`
     height: 20rem;
     transition: all 0.3s;
     animation: ${infiniteRotatingLeft} 16s infinite linear;
+		/* clip: rect(0px,20rem,20rem,0px); */
 		transition: all 3s clip 1s;
 		position: absolute;
-		clip: rect(0px,20rem,20rem,0px);
   }
 `;

@@ -1,27 +1,15 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { Redirect } from "react-router";
-import { Logout } from "../components/logout/logout";
+import { Logout } from "../../components/Logout/Logout";
+import { randomString } from "../../helpers/utils";
 
-import { useDispatch } from "react-redux";
-import userActions from "../store/user/actions";
-
-const App = () => {
+export const App = () => {
   const [roomId, setRoomId] = useState(false);
   const [inputValue, setInputValue] = useState("")
 
   const handleClick = () => {
     setRoomId(randomString(8));
   };
-
-  const dispatch = useDispatch();
-
-  useEffect(() => {
-    // const fetchData = async () => {
-    //   dispatch({ type: userActions.SET_USER });
-    // };
-
-    // fetchData();
-  }, []);
 
   return (
     <div className="container mx-auto mt-10">
@@ -47,16 +35,3 @@ const App = () => {
     </div>
   );
 };
-
-const randomString = (length) => {
-  let result = "";
-  const characters =
-    "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-  const charactersLength = characters.length;
-  for (var i = 0; i < length; i++) {
-    result += characters.charAt(Math.floor(Math.random() * charactersLength));
-  }
-  return result;
-};
-
-export default App;

@@ -1,6 +1,6 @@
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import Cookies from "js-cookie";
-import Login from "./pages/login";
+import { Login } from "./pages/";
 import { privateRoutes } from "./routes/private";
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
@@ -20,7 +20,7 @@ const App = () => {
 
   return (
     <div className="App">
-      <Router>
+      <Router history={history}>
         {token ? (
           <Switch>
             {privateRoutes.map((route, i) => (

@@ -1,5 +1,4 @@
-import Blend from "../pages/blend";
-import App from "../pages/app";
+import { App, Blend } from "../pages";
 import { Redirect } from "react-router";
 
 export const privateRoutes = [

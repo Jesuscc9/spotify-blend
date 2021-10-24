@@ -31,7 +31,7 @@ export const animateParticles = {
         "bg-blue-200",
         "rounded-full",
         "absolute",
-        "particle"
+        "particle",
       );
 
       x = Math.floor(Math.random() * (20 - 1 + 1) + 1);

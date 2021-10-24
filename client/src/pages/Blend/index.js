@@ -4,12 +4,11 @@ import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { useDispatch } from "react-redux";
 
-import roomActions from "../store/room/actions";
-import { Particles } from "../components/particles/particles";
-import { socket } from "../services/socket";
-import { ProfileImage } from "../components/profileImage/profileImage";
+import roomActions from "../../store/room/actions";
+import { socket } from "../../services/socket";
+import { ProfileImage, Particles } from "../../components/";
 
-const Blend = () => {
+export const Blend = () => {
   const { roomId } = useParams();
 
   const user = useSelector((state) => state.auth.data);
@@ -79,5 +78,3 @@ const Blend = () => {
     </div>
   );
 };
-
-export default Blend;

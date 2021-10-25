@@ -1,6 +1,7 @@
-import React from "react";
-import { SpotifyAuth, Scopes } from "react-spotify-auth"
 import { GlobalStyles } from "./styles"
+import { history } from "../../App";
+
+const { SpotifyAuth, Scopes} = require('react-spotify-auth');
 
 export const Login = () => {
   return (
@@ -20,7 +21,7 @@ export const Login = () => {
             btnClassName="btn-primary flex text-black"
             logoClassName="text-white w-45"
             onAccessToken={() => {
-              window.location = "/";
+              history.push('/')
             }}
           />{" "}
         </div>

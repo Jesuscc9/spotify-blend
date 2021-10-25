@@ -2,7 +2,11 @@ import React, { useEffect, useRef } from "react";
 import { animateParticles } from "./script";
 import { GlobalStyles } from "./styles";
 
-export const Particles = ({ attract }) => {
+interface ParticleProps {
+  attract: boolean
+}
+
+export const Particles = ({ attract } : ParticleProps) => {
 
   useEffect(() => {
     const el = document.getElementById("particlesContainer");

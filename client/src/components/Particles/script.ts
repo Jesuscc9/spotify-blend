@@ -1,5 +1,12 @@
-export const animateParticles = {
-  parentElementId: "containerXd",
+interface AnimateParticles {
+  el: any,
+  particlesCount: number,
+  init: () => void,
+  attract: () => void,
+  restart: () => void,
+}
+
+export const animateParticles: AnimateParticles = {
   el: undefined,
   particlesCount: 40,
   init: () => {

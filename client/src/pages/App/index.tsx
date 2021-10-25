@@ -4,9 +4,9 @@ import { Logout } from "../../components/Logout/Logout";
 import { randomString } from "../../helpers/utils";
 
 export const App = () => {
-  const [roomId, setRoomId] = useState(false);
-  const [inputValue, setInputValue] = useState("")
-
+  const [roomId, setRoomId] = useState<string>("");
+  const [inputValue, setInputValue] = useState<string>("");
+ 
   const handleClick = () => {
     setRoomId(randomString(8));
   };
@@ -29,7 +29,7 @@ export const App = () => {
           className="mt-10 input-text"
           onChange={(e) => setInputValue(e.target.value)}
         />
-        {roomId && <Redirect to={`/blend/${roomId}`} />}
+        {roomId.length && <Redirect to={`/blend/${roomId}`} />}
       </form>
       <Logout />
     </div>

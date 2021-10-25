@@ -1,5 +1,9 @@
 import styled, { createGlobalStyle, keyframes } from "styled-components";
 
+interface StyleProps {
+	side: boolean,
+}
+
 export const StandAnim = keyframes`
 	0%{
 		transform: translate(0%, -10%);
@@ -94,7 +98,7 @@ export const GlobalStyles = createGlobalStyle`
 	
 	`;
 
-export const ImageContainer = styled.div`
+export const ImageContainer = styled.div<StyleProps>`
   /* transition: width 2s, transform 10s ease, top 1s ease, left 1s ease; */
   transition: all 1s;
   position: absolute;

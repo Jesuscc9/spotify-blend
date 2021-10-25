@@ -1,7 +1,15 @@
 import { App, Blend } from "../pages";
 import { Redirect } from "react-router";
+import { ComponentType } from "react";
 
-export const privateRoutes = [
+interface Route {
+  name: string;
+  path: string;
+  to: string;
+  component: ComponentType;
+}
+
+export const privateRoutes: Route[] = [
   {
     name: "Home",
     path: "/",

@@ -6,13 +6,15 @@ import { useDispatch } from "react-redux";
 
 import roomActions from "../../store/room/actions";
 import { socket } from "../../services/socket";
-import { ProfileImage, Particles } from "../../components/";
+import { ProfileImage, Particles } from "../../components";
+
+import { RootStateType } from "../../store";
 
 export const Blend = () => {
-  const { roomId } = useParams();
+  const { roomId }: any = useParams();
 
-  const user = useSelector((state) => state.auth.data);
-  const room = useSelector((state) => state.room);
+  const user = useSelector((state: RootStateType) => state.auth.data);
+  const room = useSelector((state : RootStateType) => state.room);
 
   const [loading, setLoading] = useState(true);
   const [makeBlend, setMakeBlend] = useState(false);
@@ -24,7 +26,7 @@ export const Blend = () => {
     socket.connect({
       user,
       roomId,
-      onUpdateRoom: (room) => dispatch(roomActions.updateRoom(room)),
+      onUpdateRoom: (room: string) => dispatch(roomActions.updateRoom(room)),
     });
     setLoading(false);
 
@@ -46,14 +48,14 @@ export const Blend = () => {
           </button>
           {room.users.length && (
             <div className="my-20 flex justify-between p-20">
-              {room.users.map((user, i) => (
+              {room.users.map((user: any, i: number) => (
                 <div key={i}>
                   <div className="absolute w-screen h-screen top-0 left-0 flex justify-between items-center px-40" style={{ zIndex: -20 }}>
-                    <ProfileImage src={user.images[0].url} attract={makeBlend} side={i % 2 == 0 ? true : false} />
+                    <ProfileImage src={user.images[0].url} attract={makeBlend ? true : false} side={i % 2 == 0 ? true : false} />
                   </div>
 
                   <ul className="overflow-y-scroll h-60 hidden">
-                    {user.topTracks.items.map((track, i) => (
+                    {user.topTracks.items.map((track: any, i: number) => (
                       <li key={i}>
                         <a
                           href={track.external_urls.spotify}

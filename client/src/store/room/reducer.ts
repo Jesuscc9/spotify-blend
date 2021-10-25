@@ -1,12 +1,19 @@
+import { ActionType } from "../../types";
 import roomActions from "./actions";
 
-const initialState = {
+interface RoomStateType {
+  id: string,
+  activeUsers: number,
+  users: any,
+}
+
+const initialState: RoomStateType = {
   id: '',
-  activeUsers: '',
+  activeUsers: 0,
   users: [],
 }
 
-const reducer = (state = initialState, action) => {
+const reducer = (state = initialState, action: ActionType): RoomStateType  => {
   const { payload, type } = action;
 
   switch (type) {

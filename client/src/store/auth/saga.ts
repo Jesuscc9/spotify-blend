@@ -5,12 +5,13 @@ import Cookies from "js-cookie";
 import { spotifyApi } from "../../spotifyApi";
 import { sagaWrapper } from "../../helpers/redux";
 import { history } from "../../App";
+import { ResponseType } from "../../types"
 
 function* me() {
-  const response = yield call(spotifyApi.me);
-  const topTracksResponse = yield call(spotifyApi.topTracks);
+  const userData : ResponseType = yield call(spotifyApi.me);
+  const tracksData : ResponseType = yield call(spotifyApi.topTracks);
   yield put(
-    authActions.setData({ ...response.data, topTracks: topTracksResponse.data })
+    authActions.setData({ ...userData.data, topTracks: tracksData.data })
   );
 }
 

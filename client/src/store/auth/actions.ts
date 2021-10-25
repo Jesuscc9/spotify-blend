@@ -7,7 +7,7 @@ const authActions = {
     type: authActions.ME,
   }),
 
-  setData: (data) =>({
+  setData: (data: any) =>({
     payload: data,
     type: authActions.SET_DATA,
   }),

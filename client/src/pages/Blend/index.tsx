@@ -1,10 +1,9 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useParams } from "react-router";
 import { useSelector, useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
 
 import roomActions from "../../store/room/actions";
-import { socket } from "../../services/socket";
 import { ProfileImage, Particles } from "../../components";
 
 import { RootStateType } from "../../store";
@@ -21,30 +20,32 @@ export const Blend = () => {
 
   useEffect(() => {
     if (!user.display_name) return;
-    socket.connect({
-      user,
-      roomId,
-      onUpdateRoom: (room: string) => dispatch(roomActions.updateRoom(room)),
-    });
+    dispatch(roomActions.connectRoom({ user, roomId, onUpdateRoom: (room: string) => dispatch(roomActions.updateRoom(room)) }));
+    
     setLoading(false);
 
     return () => {
-      socket.disconnect();
+      dispatch(roomActions.disconnectRoom());
     };
   }, [user, roomId]);
-
+  
   useEffect(() => {
-    dispatch(roomActions.setRoomStatus("starting"));
+    dispatch(roomActions.setRoomStatus("ready"));
   }, []);
-
+  
   const handleBlendClick = () => {
     dispatch(roomActions.setRoomStatus("blending"));
-  };
+    
+    //Set timeout only for simulation purposes xd
+    setTimeout(() => {
+      dispatch(roomActions.setRoomStatus("finished"));
+    }, 5000)
+};
 
   return (
     <div className="container mx-auto mt-10">
       <Particles />
-      
+
       <Link to="/" className="btn-primary">
         Back
       </Link>
@@ -55,7 +56,7 @@ export const Blend = () => {
           <button className="btn-primary" onClick={handleBlendClick}>
             Make Blend
           </button>
-          {room.users.length && (
+          {room.users.length > 0 && (
             <div className="my-20 flex justify-between p-20">
               {room.users.map((user: any, i: number) => (
                 <div

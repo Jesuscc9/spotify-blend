@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from "react";
+import { useEffect, useRef } from "react";
 import { animateParticles } from "./script";
 import { GlobalStyles } from "./styles";
 import { useSelector } from "react-redux";
@@ -16,6 +16,7 @@ export const Particles = () => {
   }, [])
 
   if (roomStatus == "blending") animateParticles.attract();
+  if (roomStatus == "finished") animateParticles.restart();
 
   return (
     <>

@@ -1,13 +1,23 @@
 import roomActions from "../room/actions";
 
-import { call, put, takeEvery, takeLatest } from "redux-saga/effects";
-import Cookies from "js-cookie";
-import { spotifyApi } from "../../spotifyApi";
-import { sagaWrapper } from "../../helpers/redux";
-import { history } from "../../App";
-import { ResponseType } from "../../types"
+import { call, put, takeEvery } from "redux-saga/effects";
+import { ActionType } from "../../types"
+import { socket } from "../../services/socket";
 
-function* roomSaga() {
+function* connect({ payload }: ActionType) {
+	yield call(socket.connect, payload)
+	yield put(roomActions.setRoomStatus("ready"))
+}
+
+function* disconnect(){
+	yield call(socket.disconnect)
+	yield put(roomActions.setRoomStatus("closed"))
+}
+
+
+function* roomSaga(){
+	yield takeEvery(roomActions.CONNECT_ROOM, connect)
+	yield takeEvery(roomActions.DISCONNECT_ROOM, disconnect)
 }
 
 export default roomSaga;

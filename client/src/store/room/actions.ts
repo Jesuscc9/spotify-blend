@@ -1,6 +1,8 @@
 const roomActions = {
   UPDATE_ROOM: "ROOM/UPDATE_ROOM",
   SET_ROOM_STATUS: "ROOM/SET_ROOM_STATUS",
+  CONNECT_ROOM: "ROOM/CONNECT_ROOM", 
+  DISCONNECT_ROOM: "ROOM/DISONNECT_ROOM",
 
   updateRoom: (data: any) => ({
     type: roomActions.UPDATE_ROOM,
@@ -10,7 +12,17 @@ const roomActions = {
   setRoomStatus: (data: string) => ({
     type: roomActions.SET_ROOM_STATUS,
     payload: { data },
+  }),
+
+  connectRoom: (data: any) => ({
+    type: roomActions.CONNECT_ROOM,
+    payload: { ...data }
+  }),
+
+  disconnectRoom: () => ({
+    type: roomActions.DISCONNECT_ROOM,
   })
+  
 };
 
 export default roomActions;

@@ -5,7 +5,7 @@ interface RoomStateType {
   id: string,
   activeUsers: number,
   users: any,
-  status: "closed" | "waiting" | "blending" ,
+  status: "closed" | "ready" | "blending" | "finished",
 }
 
 const initialState: RoomStateType = {
@@ -22,7 +22,9 @@ const reducer = (state = initialState, action: ActionType): RoomStateType  => {
     case roomActions.UPDATE_ROOM:
       return {...state, ...payload.data};
     case roomActions.SET_ROOM_STATUS:
-      return {...state, status: payload.data  }
+      return {...state, status: payload.data  };
+    case roomActions.CONNECT_ROOM:
+      return {...state}
     default:
       return state;
   }

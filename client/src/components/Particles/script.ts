@@ -100,13 +100,6 @@ export const animateParticles: AnimateParticles = {
       particleContainer.style.left = "50%"
       particle.style.top = "50%"
       particle.style.left = "50%"
-
-      setTimeout(() => {
-        // particleContainer.remove();
-        // particle.remove();
-        // particleContainer.style.opacity = 0;
-        animateParticles.restart();
-      }, 5000)
     }
   },
 };

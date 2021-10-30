@@ -62,14 +62,13 @@ export const GlobalStyles = createGlobalStyle`
 		left: calc(50% - 10rem);
 		justify-content: left;
 		align-items: center;
-		border: 1px solid;
 		animation: none;
 }
 
 	.attracted-image-container{
 		width: 10rem;
 		overflow: hidden;
-		animation: ${attractedContainer} 3s !important;
+		animation: ${attractedContainer} 2s !important;
 		animation-fill-mode: forwards !important;
 	}
 	
@@ -87,6 +86,7 @@ export const GlobalStyles = createGlobalStyle`
 	.image-container{
 		width: 20rem;
 		height: 20rem;
+		transition: all 2s !important;
 	}
 `;
 

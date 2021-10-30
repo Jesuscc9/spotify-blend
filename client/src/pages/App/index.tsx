@@ -29,7 +29,7 @@ export const App = () => {
           className="mt-10 input-text"
           onChange={(e) => setInputValue(e.target.value)}
         />
-        {roomId.length && <Redirect to={`/blend/${roomId}`} />}
+        {roomId.length > 0 && <Redirect to={`/blend/${roomId}`} />}
       </form>
       <Logout />
     </div>

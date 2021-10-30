@@ -21,7 +21,8 @@ export const Login = () => {
             btnClassName="btn-primary flex text-black"
             logoClassName="text-white w-45"
             onAccessToken={() => {
-              history.push('/')
+              //@ts-ignore
+              window.location = "/"
             }}
           />{" "}
         </div>

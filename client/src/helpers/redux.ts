@@ -12,10 +12,7 @@ export function sagaWrapper(sagaFn: any, errorAction?: any) {
       console.log("Error:", error);
 
       if (error.response?.status === 401 && Cookies.get("auth")) {
-        yield Cookies.remove("auth", {
-          path: "/",
-          domain: window.location.hostname,
-        });
+        yield Cookies.remove("auth");
       }
 
       if (error.response) {

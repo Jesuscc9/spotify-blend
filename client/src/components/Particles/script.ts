@@ -8,7 +8,7 @@ interface AnimateParticles {
 
 export const animateParticles: AnimateParticles = {
   el: undefined,
-  particlesCount: 40,
+  particlesCount: 120,
   init: () => {
     const el = animateParticles.el;
     for (let i = 0; i < animateParticles.particlesCount; i++) {

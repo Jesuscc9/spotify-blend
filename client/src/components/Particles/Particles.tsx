@@ -1,28 +1,27 @@
 import React, { useEffect, useRef } from "react";
 import { animateParticles } from "./script";
 import { GlobalStyles } from "./styles";
+import { useSelector } from "react-redux";
+import { RootStateType } from "../../store";
 
-interface ParticleProps {
-  attract: boolean
-}
+export const Particles = () => {
 
-export const Particles = ({ attract } : ParticleProps) => {
+  const roomStatus = useSelector((state: RootStateType) => state.room.status)
+  const particlesContainerRef = useRef(null);
 
   useEffect(() => {
-    const el = document.getElementById("particlesContainer");
-    if (!el) return;
-    animateParticles.el = el
-    animateParticles.particlesCount = 120;
+    if (!particlesContainerRef.current) return;
+    animateParticles.el = particlesContainerRef.current
     animateParticles.init();
   }, [])
 
-  if (attract) animateParticles.attract()
+  if (roomStatus == "blending") animateParticles.attract();
 
   return (
     <>
       <GlobalStyles />
       <div
-        id="particlesContainer"
+        ref={particlesContainerRef}
         className="w-screen h-screen absolute top-0 left-0 particlesContainer"
       ></div>
     </>

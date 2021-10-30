@@ -46,80 +46,69 @@ const infiniteRotatingLeft = keyframes`
 
 const attractedContainer = keyframes`
 	from {
-		/* transform: translate(-50%, -70%); */
-		/* transform: rotate(100deg); */
+		width: 20rem;
+		overflow: hidden;
 	}
 	
 	to{
-		/* transform: translate(-50%, -70%); */
-		transform: rotate(0deg);
+		width: 10rem;
+		overflow: hidden;
 	}
-	`;
-
-const clipImage = keyframes`
-	0%{
-		clip: rect(0px,20rem,20rem,0px);
-	} 50%{
-		clip: rect(0px,20rem,20rem,0px);
-	} 100%{
-		clip: rect(0px,10rem,20rem,0px);
-	}
-	
-	`
+`;
 
 export const GlobalStyles = createGlobalStyle`
 	.attracted-container{
 		top: 30%;
 		left: calc(50% - 10rem);
+		justify-content: left;
 		align-items: center;
-		/* animation: ${attractedContainer} 16s infinite linear; */
-		/* transform: translate(-50%, 0%); */
-		/* animation: ${infiniteRotating} 16s infinite linear; */
+		border: 1px solid;
+		animation: none;
+}
+
+	.attracted-image-container{
+		width: 10rem;
+		overflow: hidden;
+		animation: ${attractedContainer} 3s !important;
+		animation-fill-mode: forwards !important;
 	}
 	
 	.attracted-image-right{
-		clip: rect(0px,10rem,20rem,0px);
-		animation: ${clipImage} 2s, ${infiniteRotatingLeft} 16s infinite linear !important;
-		/* transform: rotate(0deg); */
-		/* animation: none !important; */
+		/* animation: ${infiniteRotatingLeft} 16s infinite linear !important; */
+		animation: none !important;
 	}
-
+	
 	.attracted-image-left{
-		clip: rect(0px,10rem,20rem,0px);
-		animation: ${clipImage} 2s, ${infiniteRotatingLeft} 16s infinite linear !important;
-		/* transform: rotate(0deg); */
-
+		/* animation: ${infiniteRotatingLeft} 16s infinite linear !important; */
+		transform: rotate(180deg);
+		animation: none !important;
 	}
 	
 	.image-container{
 		width: 20rem;
 		height: 20rem;
 	}
-	
-	`;
+`;
 
 export const ImageContainer = styled.div<StyleProps>`
-  /* transition: width 2s, transform 10s ease, top 1s ease, left 1s ease; */
   transition: all 1s;
   position: absolute;
   top: 36%;
   left: ${(props) => props.side ? "12%" : "calc(78% - 10rem)"};
+  transform: ${(props) => props.side ? "rotate(180deg)" : "rotate(0deg)"};
   width: 20rem;
   height: 26rem;
-  /* border: 1px solid white; */
   display: flex;
   justify-content: center;
   animation: ${infiniteRotating} 16s infinite linear;
-  /* transform: translate(-50%, -70%); */
 	
   img {
 		border-radius: 50%;
     width: 20rem;
     height: 20rem;
-    transition: all 0.3s;
+    min-width: 20rem;
+    min-height: 20rem;
     animation: ${infiniteRotatingLeft} 16s infinite linear;
-		/* clip: rect(0px,20rem,20rem,0px); */
-		transition: all 3s clip 1s;
-		position: absolute;
+		transition: all 3s;
   }
 `;

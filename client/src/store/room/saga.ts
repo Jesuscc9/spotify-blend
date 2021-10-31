@@ -14,10 +14,14 @@ function* disconnect(){
 	yield put(roomActions.setRoomStatus("closed"))
 }
 
+function* setBlending(){
+	yield call(socket.setBlending);
+}
 
 function* roomSaga(){
 	yield takeEvery(roomActions.CONNECT_ROOM, connect)
 	yield takeEvery(roomActions.DISCONNECT_ROOM, disconnect)
+	yield takeEvery(roomActions.SET_BLENDING, setBlending)
 }
 
 export default roomSaga;

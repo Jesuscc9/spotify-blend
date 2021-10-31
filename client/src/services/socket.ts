@@ -1,34 +1,53 @@
 import { io } from "socket.io-client";
 
-interface ConnectFn {
-  (obj: any): any
+interface ConnectProps {
+  user: string,
+  roomId: string,
+  onUpdateRoom: (room: string) => void,
+  onBlendingRoom: () => void,
 }
 
 interface SocketType {
-  socketInstance: any,
-  connect: ConnectFn,
+  room: string,
+  instance: any,
+  connect: (obj: ConnectProps) => void,
   disconnect: () => void,
+  setBlending: () => void,
+}
+
+interface SocketParams {
+  query: string
 }
 
 export const socket: SocketType = {
-  socketInstance: undefined,
-  connect: ({user, roomId, onUpdateRoom}) => {
-    if (!roomId || !user) return;
+  room: "",
+  instance: undefined,
+  connect: ({user, roomId, onUpdateRoom, onBlendingRoom}) => {
+    socket.room = roomId;
 
-    if (!socket.socketInstance) {
-      socket.socketInstance = io(`http://localhost:3001/`, { query: { string: `room=${roomId}`} });
+    if (!socket.instance) {
+      socket.instance = io(`http://localhost:3001/`, { query: { room: roomId } });
     }
 
-    socket.socketInstance.connect();
+    socket.instance.connect();
 
-    socket.socketInstance.emit("newUser", user);
-    socket.socketInstance.on("updateRoom", (room: string) => {
-      if(!onUpdateRoom) return
-      onUpdateRoom(room)
+    socket.instance.emit("newUser", user);
+
+    socket.instance.on("updateRoom", (room: string) => {
+      onUpdateRoom(room);
     });
+
+    socket.instance.on("blending", (room: string) => {
+      if(room !== socket.room) return;
+      onBlendingRoom();
+    })
+
   },
   disconnect: () => {
-    socket.socketInstance.disconnect();
-    socket.socketInstance = undefined;
+    socket.instance.disconnect();
+    socket.instance = undefined;
   },
+  setBlending: () => {
+    socket.instance.emit("blending", socket.room)
+  }
 };

@@ -20,27 +20,36 @@ export const Blend = () => {
 
   useEffect(() => {
     if (!user.display_name) return;
-    dispatch(roomActions.connectRoom({ user, roomId, onUpdateRoom: (room: string) => dispatch(roomActions.updateRoom(room)) }));
-    
+    dispatch(
+      roomActions.connectRoom({
+        user,
+        roomId,
+        onUpdateRoom: (room: string) => dispatch(roomActions.updateRoom(room)),
+        onBlendingRoom: () => { 
+          dispatch(roomActions.setRoomStatus("blending"));
+
+          //setTimeout only with simulation purposes xd
+          setTimeout(() => {
+            dispatch(roomActions.setRoomStatus("finished"));
+          }, 5000)
+        } 
+      })
+    );
+
     setLoading(false);
 
     return () => {
       dispatch(roomActions.disconnectRoom());
     };
   }, [user, roomId]);
-  
+
   useEffect(() => {
     dispatch(roomActions.setRoomStatus("ready"));
   }, []);
-  
+
   const handleBlendClick = () => {
-    dispatch(roomActions.setRoomStatus("blending"));
-    
-    //Set timeout only for simulation purposes xd
-    setTimeout(() => {
-      dispatch(roomActions.setRoomStatus("finished"));
-    }, 5000)
-};
+    dispatch(roomActions.setBlending());
+  };
 
   return (
     <div className="container mx-auto mt-10">
@@ -74,7 +83,7 @@ export const Blend = () => {
           )}
         </>
       ) : (
-        <div>Cargando...</div>
+        <div>necesito un loadeeerrr...</div>
       )}
       <br />
     </div>

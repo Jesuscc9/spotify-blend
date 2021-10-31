@@ -13,8 +13,6 @@ app.use(
   })
 );
 
-app.use(cors());
-
 app.use(express.json());
 
 const server = http.createServer(app);
@@ -30,6 +28,9 @@ let rooms = [];
 
 io.on("connection", (socket) => {
   const roomId = socket.handshake.query.room;
+
+  console.log(roomId)
+  console.log(socket.handshake.query)
 
   let roomIndex = rooms.findIndex((el) => el.id == roomId);
   let userIndex = 0;
@@ -53,6 +54,10 @@ io.on("connection", (socket) => {
     updateRooms();
   });
 
+  socket.on("blending", (room) => {
+    io.sockets.emit("blending", room)
+  })
+
   socket.on("disconnect", () => {
     userIndex = rooms[roomIndex].users.findIndex((user) => user.id == userId)
     rooms[roomIndex].users.splice(userIndex, 1);
@@ -67,6 +72,8 @@ io.on("connection", (socket) => {
       activeUsers: rooms[roomIndex].activeUsers,
       users,
     })
+
+    //Provisional fix, but most be changed for more rooms support
     io.sockets.emit("updateRoom", rooms[roomIndex]);
   };
 });

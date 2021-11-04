@@ -8,46 +8,50 @@ interface ConnectProps {
 }
 
 interface SocketType {
-  room: string,
+  roomId: string,
   instance: any,
   connect: (obj: ConnectProps) => void,
-  disconnect: () => void,
+  disconnect: (obj: any) => void,
   setBlending: () => void,
 }
 
-interface SocketParams {
-  query: string
-}
-
 export const socket: SocketType = {
-  room: "",
+  roomId: "",
   instance: undefined,
   connect: ({user, roomId, onUpdateRoom, onBlendingRoom}) => {
-    socket.room = roomId;
+    socket.roomId = roomId;
 
     if (!socket.instance) {
-      socket.instance = io(`http://localhost:3001/`, { query: { room: roomId } });
+      socket.instance = io(`http://localhost:3001/`);
     }
 
     socket.instance.connect();
 
-    socket.instance.emit("newUser", user);
+    socket.instance.emit("newUser", { user, roomId });
 
-    socket.instance.on("updateRoom", (room: string) => {
+    socket.instance.on("updateRoom", (room: any) => {
+      if(room.id !== roomId) return;
       onUpdateRoom(room);
     });
 
-    socket.instance.on("blending", (room: string) => {
-      if(room !== socket.room) return;
+    socket.instance.on("blending", (roomId: string) => {
+      if(roomId !== socket.roomId) return;
       onBlendingRoom();
     })
-
   },
-  disconnect: () => {
+
+  disconnect: ({ userId, roomId }) => {
+    console.log({
+      userId, 
+      roomId
+    })
+    console.log("se desconecta por cliente");
+    debugger
     socket.instance.disconnect();
     socket.instance = undefined;
   },
+
   setBlending: () => {
-    socket.instance.emit("blending", socket.room)
+    socket.instance.emit("blending", socket.roomId)
   }
 };

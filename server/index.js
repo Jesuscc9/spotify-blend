@@ -27,55 +27,56 @@ const io = socketIo(server, {
 let rooms = [];
 
 io.on("connection", (socket) => {
-  const roomId = socket.handshake.query.room;
 
-  console.log(roomId)
-  console.log(socket.handshake.query)
 
-  let roomIndex = rooms.findIndex((el) => el.id == roomId);
-  let userIndex = 0;
-  let userId = ""
+  socket.on("newUser", ({ user, roomId }) => {
+    socket.userId = user.id;
+    socket.roomId = roomId;
 
-  socket.on("newUser", (e) => {
-    userId = e.id;
-    console.log(userId);
+    let roomIndex = rooms.findIndex((room) => room.id === roomId);
+
     if (roomIndex > -1) {
-      userIndex = rooms[roomIndex].users.length;
-      rooms[roomIndex].users.push(e);
+      rooms[roomIndex].users.push(user);
       rooms[roomIndex].activeUsers++;
     } else {
       roomIndex = rooms.length;
       rooms.push({
         id: roomId,
         activeUsers: 1,
-        users: [e],
+        users: [user],
       });
     }
-    updateRooms();
+
+    updateRooms(roomIndex);
   });
 
-  socket.on("blending", (room) => {
-    io.sockets.emit("blending", room)
+  socket.on("blending", ({ roomId }) => {
+    io.sockets.emit("blending", roomId)
   })
 
   socket.on("disconnect", () => {
-    userIndex = rooms[roomIndex].users.findIndex((user) => user.id == userId)
+    console.log("se disconecta")
+    console.log({userId: socket.userId, roomId: socket.roomId})
+    const roomIndex = rooms.findIndex((room) => room.id == socket.roomId);
+
+    userIndex = rooms[roomIndex].users.findIndex((user) => user.id == socket.userId);
+
     rooms[roomIndex].users.splice(userIndex, 1);
     rooms[roomIndex].activeUsers--;
-    updateRooms();
+    
+    updateRooms(roomIndex);
   });
-
-  updateRooms = () => {
-    const users = rooms[roomIndex].users.map((user) => (user.id))
+  
+  updateRooms = (roomIndex) => {
+    const users = rooms[roomIndex].users.map((user) => (user.id));
     console.log({
       id: rooms[roomIndex].id,
       activeUsers: rooms[roomIndex].activeUsers,
       users,
     })
 
-    //Provisional fix, but most be changed for more rooms support
     io.sockets.emit("updateRoom", rooms[roomIndex]);
   };
 });
 
-server.listen(PORT, () => {});
+server.listen(PORT, () => { });

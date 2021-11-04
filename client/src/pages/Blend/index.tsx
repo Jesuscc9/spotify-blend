@@ -25,21 +25,21 @@ export const Blend = () => {
         user,
         roomId,
         onUpdateRoom: (room: string) => dispatch(roomActions.updateRoom(room)),
-        onBlendingRoom: () => { 
+        onBlendingRoom: () => {
           dispatch(roomActions.setRoomStatus("blending"));
 
           //setTimeout only with simulation purposes xd
           setTimeout(() => {
             dispatch(roomActions.setRoomStatus("finished"));
-          }, 5000)
-        } 
+          }, 5000);
+        },
       })
     );
 
     setLoading(false);
 
     return () => {
-      dispatch(roomActions.disconnectRoom());
+      dispatch(roomActions.disconnectRoom({ userId: user.id, roomId }));
     };
   }, [user, roomId]);
 
@@ -62,9 +62,11 @@ export const Blend = () => {
       {!loading ? (
         <>
           <div className="my-10">New blend on room: {roomId}</div>
-          <button className="btn-primary" onClick={handleBlendClick}>
-            Make Blend
-          </button>
+          { (room.status == "ready" && room?.activeUsers === 2) && (
+            <button className="btn-primary" onClick={handleBlendClick}>
+              Make Blend
+            </button>
+          )}
           {room.users.length > 0 && (
             <div className="my-20 flex justify-between p-20">
               {room.users.map((user: any, i: number) => (

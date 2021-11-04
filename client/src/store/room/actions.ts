@@ -24,8 +24,9 @@ const roomActions = {
     type: roomActions.SET_BLENDING,
   }),
 
-  disconnectRoom: () => ({
+  disconnectRoom: (data: any) => ({
     type: roomActions.DISCONNECT_ROOM,
+    payload: data,
   })
   
 };

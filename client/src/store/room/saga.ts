@@ -9,8 +9,8 @@ function* connect({ payload }: ActionType) {
 	yield put(roomActions.setRoomStatus("ready"))
 }
 
-function* disconnect(){
-	yield call(socket.disconnect)
+function* disconnect({ payload }: ActionType){
+	yield call(socket.disconnect, payload)
 	yield put(roomActions.setRoomStatus("closed"))
 }
 

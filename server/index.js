@@ -51,6 +51,8 @@ io.on("connection", (socket) => {
   });
 
   socket.on("blending", ({ roomId }) => {
+    console.log("recibe blend")
+    console.log(roomId)
     io.sockets.emit("blending", roomId)
   })
 

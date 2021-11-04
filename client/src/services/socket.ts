@@ -1,24 +1,24 @@
 import { io } from "socket.io-client";
 
 interface ConnectProps {
-  user: string,
-  roomId: string,
-  onUpdateRoom: (room: string) => void,
-  onBlendingRoom: () => void,
+  user: string;
+  roomId: string;
+  onUpdateRoom: (room: string) => void;
+  onBlendingRoom: () => void;
 }
 
 interface SocketType {
-  roomId: string,
-  instance: any,
-  connect: (obj: ConnectProps) => void,
-  disconnect: (obj: any) => void,
-  setBlending: () => void,
+  roomId: string;
+  instance: any;
+  connect: (obj: ConnectProps) => void;
+  disconnect: (obj: any) => void;
+  setBlending: () => void;
 }
 
 export const socket: SocketType = {
   roomId: "",
   instance: undefined,
-  connect: ({user, roomId, onUpdateRoom, onBlendingRoom}) => {
+  connect: ({ user, roomId, onUpdateRoom, onBlendingRoom }) => {
     socket.roomId = roomId;
 
     if (!socket.instance) {
@@ -30,28 +30,22 @@ export const socket: SocketType = {
     socket.instance.emit("newUser", { user, roomId });
 
     socket.instance.on("updateRoom", (room: any) => {
-      if(room.id !== roomId) return;
+      if (room.id !== roomId) return;
       onUpdateRoom(room);
     });
 
     socket.instance.on("blending", (roomId: string) => {
-      if(roomId !== socket.roomId) return;
+      if (roomId !== socket.roomId) return;
       onBlendingRoom();
-    })
+    });
   },
 
   disconnect: ({ userId, roomId }) => {
-    console.log({
-      userId, 
-      roomId
-    })
-    console.log("se desconecta por cliente");
-    debugger
     socket.instance.disconnect();
     socket.instance = undefined;
   },
 
   setBlending: () => {
-    socket.instance.emit("blending", socket.roomId)
-  }
+    socket.instance.emit("blending", { roomId: socket.roomId });
+  },
 };

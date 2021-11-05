@@ -6,6 +6,7 @@ import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import authActions from "./store/auth/actions";
 import { createBrowserHistory } from "history";
+import { AnimateSharedLayout } from "framer-motion";
 
 export const history = createBrowserHistory();
 
@@ -18,18 +19,24 @@ export const App = () => {
     dispatch(authActions.me());
   }, []);
 
+  const props = {
+    type: "crossfade"
+  }
+
   return (
     <Router history={history}>
       {token ? (
         <Switch>
-          {privateRoutes.map((route, i) => (
-            <Route
-              exact
-              key={i}
-              path={route.path}
-              component={route.component}
-            />
-          ))}
+          <AnimateSharedLayout {...props}>
+            {privateRoutes.map((route, i) => (
+              <Route
+                exact
+                key={i}
+                path={route.path}
+                component={route.component}
+              />
+            ))}
+          </AnimateSharedLayout>
         </Switch>
       ) : (
         <Switch>

@@ -5,8 +5,8 @@ import { Link } from "react-router-dom";
 
 import roomActions from "../../store/room/actions";
 import { ProfileImage, Particles } from "../../components";
-
 import { RootStateType } from "../../store";
+import { AnimatePresence, motion } from "framer-motion";
 
 export const Blend = () => {
   const { roomId }: any = useParams();
@@ -59,10 +59,12 @@ export const Blend = () => {
         Back
       </Link>
 
+      {room?.status === "finished" && <Playlist users={room.users} />}
+
       {!loading ? (
         <>
           <div className="my-10">New blend on room: {roomId}</div>
-          { (room.status == "ready" && room?.activeUsers === 2) && (
+          {room.status == "ready" && room?.activeUsers === 2 && (
             <button className="btn-primary" onClick={handleBlendClick}>
               Make Blend
             </button>
@@ -78,6 +80,7 @@ export const Blend = () => {
                   <ProfileImage
                     src={user.images[0].url}
                     side={i % 2 == 0 ? true : false}
+                    index={i}
                   />
                 </div>
               ))}
@@ -87,7 +90,26 @@ export const Blend = () => {
       ) : (
         <div>necesito un loadeeerrr...</div>
       )}
+
       <br />
     </div>
+  );
+};
+
+interface PlaylistProps {
+  users: any;
+}
+
+const Playlist = ({ users }: PlaylistProps) => {
+  return (
+    <AnimatePresence>
+      <motion.div className="container border flex">
+        {users.map((user: any, i: number) => (
+          <motion.div layoutId={`user-image-container-${i}`}>
+            <img src={user.images[0].url} alt="clairo" className="w-20 h-20 rounded-full"/>
+          </motion.div>
+        ))}
+      </motion.div>
+    </AnimatePresence>
   );
 };

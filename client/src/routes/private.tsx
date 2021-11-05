@@ -29,5 +29,5 @@ export const privateRoutes: Route[] = [
     path: "/blend/:roomId",
     to: "/blend/:roomId",
     component: Blend,
-  },
+  }
 ];

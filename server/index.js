@@ -51,14 +51,10 @@ io.on("connection", (socket) => {
   });
 
   socket.on("blending", ({ roomId }) => {
-    console.log("recibe blend")
-    console.log(roomId)
     io.sockets.emit("blending", roomId)
   })
 
   socket.on("disconnect", () => {
-    console.log("se disconecta")
-    console.log({userId: socket.userId, roomId: socket.roomId})
     const roomIndex = rooms.findIndex((room) => room.id == socket.roomId);
 
     userIndex = rooms[roomIndex].users.findIndex((user) => user.id == socket.userId);

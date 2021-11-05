@@ -15,9 +15,9 @@ export const ProfileImage = ({ src, side, index }: ProfileImageProps) => {
 	return (
 		<>
 			<GlobalStyles />
-			<ImageContainer className={roomStatus == "blending" ? "attracted-container" : ""} side={side}>
-				<motion.div className={`image-container ${roomStatus == "blending" ? "attracted-image-container" : ""}`} layoutId={`user-image-container-${index}`}>
-					<img title="User image" src={src} className={roomStatus == "blending" ? `attracted-image-${side ? "left" : "right"}` : ""} />
+			<ImageContainer className={roomStatus === "blending" ? "attracted-container" : ""} side={side}>
+				<motion.div className={`image-container ${roomStatus === "blending" ? "attracted-image-container" : ""}`} layoutId={`user-image-container-${index}`}>
+					<img title="User image" alt="clairo" src={src} className={roomStatus === "blending" ? `attracted-image-${side ? "left" : "right"}` : ""} />
 				</motion.div>
 			</ImageContainer>
 		</>

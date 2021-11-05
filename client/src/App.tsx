@@ -20,14 +20,14 @@ export const App = () => {
   }, []);
 
   const props = {
-    type: "crossfade"
+    type: "switch"
   }
 
   return (
     <Router history={history}>
       {token ? (
         <Switch>
-          <AnimateSharedLayout {...props}>
+          <AnimateSharedLayout type="crossfade">
             {privateRoutes.map((route, i) => (
               <Route
                 exact

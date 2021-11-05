@@ -1,4 +1,4 @@
-import styled, { createGlobalStyle, keyframes } from "styled-components";
+import { createGlobalStyle, keyframes } from "styled-components";
 
 const fadeAnim = keyframes`
 	0%{

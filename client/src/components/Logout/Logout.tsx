@@ -1,6 +1,3 @@
-import React from "react";
-import Cookies from "js-cookie";
-
 import { useDispatch } from "react-redux";
 import authActions from "../../store/auth/actions";
 

@@ -15,8 +15,8 @@ export const Particles = () => {
     animateParticles.init();
   }, [])
 
-  if (roomStatus == "blending") animateParticles.attract();
-  if (roomStatus == "finished") animateParticles.restart();
+  if (roomStatus === "blending") animateParticles.attract();
+  if (roomStatus === "finished") animateParticles.restart();
 
   return (
     <>

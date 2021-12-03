@@ -30,7 +30,7 @@ export const Blend = () => {
 
           //setTimeout only with simulation purposes xd
           setTimeout(() => {
-            dispatch(roomActions.setRoomStatus("finished"));
+            // dispatch(roomActions.setRoomStatus("finished"));
           }, 5000);
         },
       })
@@ -57,10 +57,17 @@ export const Blend = () => {
       <Link to="/" className="btn-primary">
         Back
       </Link>
-      {room?.status === "finished" && <Playlist users={room.users} />}
 
-      {!loading ?  (
-        <BlendRoom room={room} roomId={roomId} handleBlendClick={handleBlendClick} />
+      {room?.status === "finished" && <BlendedRoom users={room.users} />}
+
+      {/* {room?.status === "blending" && <BlendingRoom users={room.users} />} */}
+
+      {!loading ? (
+        <BlendRoom
+          room={room}
+          roomId={roomId}
+          handleBlendClick={handleBlendClick}
+        />
       ) : (
         <div>necesito un loadeeerrr...</div>
       )}
@@ -70,8 +77,8 @@ export const Blend = () => {
 };
 
 interface BlendRoomProps {
-  room: any,
-  roomId: string,
+  room: any;
+  roomId: string;
   handleBlendClick: any;
 }
 
@@ -79,45 +86,50 @@ const BlendRoom = ({ room, roomId, handleBlendClick }: BlendRoomProps) => {
   return (
     <>
       <div className="my-10">New blend on room: {roomId}</div>
-      {room.status == "ready" && room?.activeUsers === 2 && (
+
+      {/* {room.status == "ready" && room?.activeUsers === 2 && ( */}
         <button className="btn-primary" onClick={handleBlendClick}>
           Make Blend
         </button>
-      )}
-      {room.users.length > 0 && (
-        <div className="my-20 flex justify-between p-20">
-          {room.users.map((user: any, i: number) => (
-            <div
-              className="absolute w-screen h-screen top-0 left-0 flex justify-between items-center px-40"
-              style={{ zIndex: -20 }}
-              key={i}
-            >
+      {/* )} */}
+
+      <motion.div className="container" layoutId="parent-container">
+        {room.users.length > 0 && (
+          <div className="my-20 flex justify-between">
+            {room.users.map((user: any, i: number) => (
               <ProfileImage
+                key={i}
                 src={user.images[0].url}
                 side={i % 2 == 0 ? true : false}
                 index={i}
               />
-            </div>
-          ))}
-        </div>
-      )}
+            ))}
+          </div>
+        )}
+      </motion.div>
     </>
-  )
-}
+  );
+};
 
-interface PlaylistProps {
+interface BlendedRoomProps {
   users: any;
 }
 
-const Playlist = ({ users }: PlaylistProps) => {
+const BlendedRoom = ({ users }: BlendedRoomProps) => {
   return (
     <AnimatePresence>
-      <motion.div className="container border flex">
-        {users.map((user: any, i: number) => (
-          <motion.div layoutId={`user-image-container-${i}`}>
-            <img src={user.images[0].url} alt="clairo" className="w-20 h-20 rounded-full" />
-          </motion.div>
-        ))}
+      <motion.div className="container border" layoutId="parent-container">
+        <motion.div layoutId="users-images-container flex">
+          {users.map((user: any, i: number) => (
+            <motion.div layoutId={`user-image-container-${i}`}>
+              <img
+                src={user.images[0].url}
+                alt="clairo"
+                className="w-20 h-20 rounded-full"
+              />
+            </motion.div>
+          ))}
+        </motion.div>
       </motion.div>
     </AnimatePresence>
   );

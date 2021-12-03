@@ -1,7 +1,8 @@
-import styled, { createGlobalStyle, keyframes } from "styled-components";
+import styled, { createGlobalStyle, css, keyframes } from "styled-components";
 
 interface StyleProps {
 	side: boolean,
+	blending: boolean,
 }
 
 export const StandAnim = keyframes`
@@ -91,16 +92,17 @@ export const GlobalStyles = createGlobalStyle`
 `;
 
 export const ImageContainer = styled.div<StyleProps>`
-  transition: all 1s;
-  position: absolute;
-  top: 36%;
-  left: ${(props) => props.side ? "12%" : "calc(78% - 10rem)"};
-  transform: ${(props) => props.side ? "rotate(180deg)" : "rotate(0deg)"};
-  width: 20rem;
+  transition: all 1s !important;
+  /* position: absolute; */
+  /* top: 36%; */
+  left: ${(props) => props.side && props.blending ? "calc(50% - 10rem)" : !props.side && props.blending ? "calc(-50% + 10rem)" : "0%"};
+  width: ${(props) => props.blending ? "10rem" : "20rem"};
   height: 26rem;
-  display: flex;
-  justify-content: center;
-  animation: ${infiniteRotating} 16s infinite linear;
+  /* animation: ${(props) => !props.blending && css`${infiniteRotatingLeft} 16s infinite linear`}; */
+  animation: ${infiniteRotatingLeft} 16s infinite linear;
+	animation-fill-mode: forwards !important;
+	position: relative;
+	overflow: hidden;
 	
   img {
 		border-radius: 50%;
@@ -108,7 +110,8 @@ export const ImageContainer = styled.div<StyleProps>`
     height: 20rem;
     min-width: 20rem;
     min-height: 20rem;
-    animation: ${infiniteRotatingLeft} 16s infinite linear;
+  	/* animation: ${(props) => !props.blending && css`${infiniteRotating} 16s infinite linear`}; */
+  	animation: ${infiniteRotating} 16s infinite linear;
 		transition: all 3s;
   }
 `;

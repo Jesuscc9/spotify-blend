@@ -2,7 +2,7 @@ import { ImageContainer, GlobalStyles } from "./styles";
 import { useSelector } from "react-redux";
 import { RootStateType } from "../../store";
 import { motion } from "framer-motion";
-import { createRef, useEffect, useRef } from "react";
+import React, { createRef, useEffect, useRef } from "react";
 import { getCurrentRotation } from "../../helpers";
 interface ProfileImageProps {
   src: string;
@@ -14,26 +14,39 @@ export const ProfileImage = ({ src, side, index }: ProfileImageProps) => {
   const roomStatus = useSelector((state: RootStateType) => state.room.status);
 
   const imageContainerRef = useRef(document.createElement("div"));
+  const imageRef = useRef(document.createElement("img"));
 
   useEffect(() => {
     const fn = async () => {
-      console.log(imageContainerRef);
       const deg: number = getCurrentRotation(imageContainerRef.current);
 
       imageContainerRef.current.style.animation = "none";
+      imageContainerRef.current.style.height = "20rem";
       imageContainerRef.current.style.transform = `rotate(${deg}deg)`;
 
-      await new Promise((resolve, reject) => setTimeout(resolve, 10));
+      await new Promise((resolve) => setTimeout(resolve, 10));
 
-      console.log(imageContainerRef.current.style.transform);
-      await new Promise((resolve, reject) => setTimeout(resolve, 10));
+      await new Promise((resolve) => setTimeout(resolve, 10));
 
-      imageContainerRef.current.style.transform = `rotate(0deg)`;
-      console.log(imageContainerRef.current.style.transform);
+      imageContainerRef.current.style.transform = `rotate(${side ? "0" : "180"}deg)`;
     };
+
+    const fn2 = async () => {
+      const deg: number = getCurrentRotation(imageRef.current);
+
+      imageRef.current.style.animation = "none";
+      imageRef.current.style.transform = `rotate(${deg}deg)`;
+
+      await new Promise((resolve) => setTimeout(resolve, 10));
+
+      await new Promise((resolve) => setTimeout(resolve, 10));
+
+      imageRef.current.style.transform = `rotate(${side ? "0" : "180"}deg)`;
+    }
 
     if (roomStatus == "blending") {
       fn();
+      fn2();
     }
   }, [roomStatus]);
 
@@ -50,7 +63,7 @@ export const ProfileImage = ({ src, side, index }: ProfileImageProps) => {
           className={`image-container`}
           layoutId={`user-image-container-${index}`}
         >
-          <img alt="hola" src={src} className="" />
+          <img alt="hola" ref={imageRef} src={src} className="" />
         </motion.div>
       </ImageContainer>
     </>

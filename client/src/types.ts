@@ -6,3 +6,9 @@ export interface ActionType {
 export interface ResponseType {
   data?: any,  
 }
+
+export interface iCommonUsersData {
+  tracks: Array<string>,
+  artists: Array<string>,
+  genres: Array<string>
+}

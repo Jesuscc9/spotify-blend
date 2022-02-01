@@ -1,5 +1,6 @@
 import { GlobalStyles } from "./styles"
 import { history } from "../../App";
+import React from "react";
 
 const { SpotifyAuth, Scopes} = require('react-spotify-auth');
 

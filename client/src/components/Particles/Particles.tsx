@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import React, { useEffect, useRef } from "react";
 import { animateParticles } from "./script";
 import { GlobalStyles } from "./styles";
 import { useSelector } from "react-redux";

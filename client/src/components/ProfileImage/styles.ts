@@ -1,4 +1,5 @@
 import styled, { createGlobalStyle, css, keyframes } from "styled-components";
+import { motion } from "framer-motion"
 
 interface StyleProps {
 	side: boolean,
@@ -110,7 +111,6 @@ export const ImageContainer = styled.div<StyleProps>`
     height: 20rem;
     min-width: 20rem;
     min-height: 20rem;
-  	/* animation: ${(props) => !props.blending && css`${infiniteRotating} 16s infinite linear`}; */
   	animation: ${infiniteRotating} 16s infinite linear;
 		transition: all 3s;
   }

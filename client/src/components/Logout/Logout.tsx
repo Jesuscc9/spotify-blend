@@ -1,5 +1,6 @@
 import { useDispatch } from "react-redux";
 import authActions from "../../store/auth/actions";
+import React from "react";
 
 export const Logout = () => {
   const dispatch = useDispatch();

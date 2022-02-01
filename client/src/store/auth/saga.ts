@@ -10,8 +10,9 @@ import { ResponseType } from "../../types"
 function* me() {
   const userData : ResponseType = yield call(spotifyApi.me);
   const tracksData : ResponseType = yield call(spotifyApi.topTracks);
+  const artistsData : ResponseType = yield call(spotifyApi.topArtists);
   yield put(
-    authActions.setData({ ...userData.data, topTracks: tracksData.data })
+    authActions.setData({ ...userData.data, topTracks: tracksData.data, topArtists: artistsData.data })
   );
 }
 

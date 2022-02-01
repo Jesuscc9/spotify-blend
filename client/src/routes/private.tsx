@@ -1,6 +1,6 @@
 import { App, Blend } from "../pages";
 import { Redirect } from "react-router";
-import { ComponentType } from "react";
+import React, { ComponentType } from "react";
 
 interface Route {
   name: string;

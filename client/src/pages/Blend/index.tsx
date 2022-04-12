@@ -9,6 +9,7 @@ import { RootStateType } from '../../store'
 import { AnimatePresence, motion } from 'framer-motion'
 import { spotifyApi } from '../../spotifyApi'
 import { getCommonUsersData } from '../../helpers'
+import { iCommonUsersData } from '../../types'
 
 export const Blend = () => {
   const { roomId }: any = useParams()
@@ -116,31 +117,20 @@ interface BlendedRoomProps {
   users: any
 }
 
-const getGenres = async (artistsIds: Array<string>) => {
-  if (artistsIds.length > 50) {
-    console.error('The limit for fetching artists genres is 50')
-    return []
-  }
-  const genres: Array<string> = []
-
-  const response = await spotifyApi.getArtistsGenres(artistsIds.join())
-  console.log({ response })
-  response.data.artists.forEach((e: any) => {
-    e.genres.forEach((genre: string) => {
-      genres.push(genre)
-    })
+const BlendedRoom = ({ users }: BlendedRoomProps) => {
+  //TODO: Migrate this common data to global store on redux with saga actions
+  const [commonData, setCommonData] = useState<iCommonUsersData>({
+    tracks: [],
+    artists: [],
+    genres: []
   })
 
-  return genres
-}
-
-const BlendedRoom = ({ users }: BlendedRoomProps) => {
+  const { artists, tracks, genres } = commonData
 
   useEffect(() => {
-    const fetch = async () => {
-      console.log(await getCommonUsersData(users))
-    }
-    fetch()
+    getCommonUsersData(users).then((e) => {
+      setCommonData(e)
+    })
   }, [])
 
   return (
@@ -150,7 +140,6 @@ const BlendedRoom = ({ users }: BlendedRoomProps) => {
           <motion.div
             className="border"
             layoutId={`user-image-container-${i}`}
-            style={{}}
             key={i}
           >
             <img
@@ -162,7 +151,18 @@ const BlendedRoom = ({ users }: BlendedRoomProps) => {
           </motion.div>
         ))}
       </motion.div>
-      <h5>You and Jesus have a match of 95%</h5>
+      <h1>SONGS IN COMMON</h1>
+      {tracks.map((e: string, i) => (
+        <p key={e}>{e}</p>
+      ))}
+      <h1>ARTISTS IN COMMON</h1>
+      {artists.map((e: string, i) => (
+        <p key={e}>{e}</p>
+      ))}
+      <h1>GENRES IN COMMON</h1>
+      {genres.map((e: string, i) => (
+        <p key={e}>{e}</p>
+      ))}
     </AnimatePresence>
   )
 }

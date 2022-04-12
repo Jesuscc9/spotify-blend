@@ -60,56 +60,18 @@ const getGenres = async (artistsIds: Array<string>): Promise<iGenre> => {
 }
 
 const getCommonUsersData = async (users: Array<any>): Promise<iCommonUsersData> => {
-  type iArtist = {
-    [key: string]: {
-      count: number
-      id: string
-    }
-  }
 
   const commonUsersData: iCommonUsersData = {
     tracks: [],
     artists: [],
     genres: []
   }
-
-  //We use objects because of performance priority
-  const artistsUser1: iArtist = {}
-  const artistsUser2: iArtist = {}
-
   const topTracksUser1: Array<string> = []
   const topTracksUser2: Array<string> = []
 
-  interface artistType {
-    name: string
-    id: string
-  }
-
-  users[0].topTracks.items.forEach((track: any) => {
-    topTracksUser1.push(track.name)
-
-    track.artists.forEach((artist: artistType) => {
-      artistsUser1[artist.name] =
-        artistsUser1[artist.name] === undefined
-          ? { count: 1, id: artist.id }
-          : { count: artistsUser1[artist.name].count + 1, id: artist.id }
-    })
-  })
-
-  users[1].topTracks.items.forEach((track: any) => {
-    topTracksUser2.push(track.name)
-
-    track.artists.forEach((artist: artistType) => {
-      artistsUser2[artist.name] =
-        artistsUser2[artist.name] === undefined
-          ? { count: 1, id: artist.id }
-          : { count: artistsUser2[artist.name].count + 1, id: artist.id }
-    })
-  })
-
-  Object.keys(artistsUser1).forEach((el: string) => {
-    if (Object.keys(artistsUser2).includes(el)) {
-      commonUsersData.artists.push(el)
+  users[0].topArtists.items.forEach((el: any) => {
+    if (users[1].topArtists.items.map((e: any) => e.name).includes(el.name)) {
+      commonUsersData.artists.push(el.name)
     }
   })
 
@@ -119,13 +81,12 @@ const getCommonUsersData = async (users: Array<any>): Promise<iCommonUsersData> 
     }
   })
 
-  const artistsIds1 = Object.keys(artistsUser1).map((e) => artistsUser1[e].id)
-  const artistsIds2 = Object.keys(artistsUser2).map((e) => artistsUser2[e].id)
+  const artistsIds1 = users[0].topArtists.items.map((e: any) => e.id)
+  const artistsIds2 = users[1].topArtists.items.map((e: any) => e.id)
 
   const genres1: iGenre = await getGenres(artistsIds1)
-  console.log({ genres1 })
   const genres2: iGenre = await getGenres(artistsIds2)
-  console.log({ genres2 })
+
   Object.keys(genres1).forEach((e) => {
     if (genres1[e] > 2 && Object.keys(genres2).includes(e)) {
       if(genres2[e] > 2)

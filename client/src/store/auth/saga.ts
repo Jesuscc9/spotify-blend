@@ -1,29 +1,33 @@
-import authActions from "../auth/actions";
+import authActions from '../auth/actions'
 
-import { call, put, takeEvery, takeLatest } from "redux-saga/effects";
-import Cookies from "js-cookie";
-import { spotifyApi } from "../../spotifyApi";
-import { sagaWrapper } from "../../helpers/redux";
-import { history } from "../../App";
-import { ResponseType } from "../../types"
+import { call, put, takeEvery, takeLatest } from 'redux-saga/effects'
+import Cookies from 'js-cookie'
+import { spotifyApi } from '../../spotifyApi'
+import { sagaWrapper } from '../../helpers/redux'
+import { history } from '../../App'
+import { ResponseType } from '../../types'
 
 function* me() {
-  const userData : ResponseType = yield call(spotifyApi.me);
-  const tracksData : ResponseType = yield call(spotifyApi.topTracks);
-  const artistsData : ResponseType = yield call(spotifyApi.topArtists);
+  const userData: ResponseType = yield call(spotifyApi.me)
+  const tracksData: ResponseType = yield call(spotifyApi.topTracks)
+  const artistsData: ResponseType = yield call(spotifyApi.topArtists)
   yield put(
-    authActions.setData({ ...userData.data, topTracks: tracksData.data, topArtists: artistsData.data })
-  );
+    authActions.setData({
+      ...userData.data,
+      topTracks: tracksData.data,
+      topArtists: artistsData.data
+    })
+  )
 }
 
 function* logout() {
-  yield Cookies.remove("spotifyAuthToken");
-  yield history.push("/");
+  yield Cookies.remove('spotifyAuthToken')
+  yield history.push('/')
 }
 
 function* authSaga() {
-  yield takeLatest(authActions.ME, sagaWrapper(me));
-  yield takeLatest(authActions.LOGOUT, logout);
+  yield takeLatest(authActions.ME, sagaWrapper(me))
+  yield takeLatest(authActions.LOGOUT, logout)
 }
 
-export default authSaga;
+export default authSaga

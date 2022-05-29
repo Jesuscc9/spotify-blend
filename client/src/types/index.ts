@@ -1,14 +1,14 @@
 export interface ActionType {
-  type: string;
-  payload?: any;
+  type: string
+  payload?: any
 }
 
 export interface ResponseType {
-  data?: any,  
+  data?: any
 }
 
 export interface iCommonUsersData {
-  tracks: Array<string>,
-  artists: Array<string>,
+  tracks: Array<string>
+  artists: Array<string>
   genres: Array<string>
 }

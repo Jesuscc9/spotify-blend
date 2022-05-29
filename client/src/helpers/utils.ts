@@ -59,27 +59,33 @@ const getGenres = async (artistsIds: Array<string>): Promise<iGenre> => {
   return genres
 }
 
-const getCommonUsersData = async (users: Array<any>): Promise<iCommonUsersData> => {
+const getCommonUsersData = async (
+  users: Array<any>
+): Promise<iCommonUsersData> => {
+  console.log({ users })
 
   const commonUsersData: iCommonUsersData = {
     tracks: [],
     artists: [],
     genres: []
   }
-  const topTracksUser1: Array<string> = []
-  const topTracksUser2: Array<string> = []
 
   users[0].topArtists.items.forEach((el: any) => {
     if (users[1].topArtists.items.map((e: any) => e.name).includes(el.name)) {
-      commonUsersData.artists.push(el.name)
+      commonUsersData.artists.push(el)
     }
   })
 
-  topTracksUser1.forEach((track) => {
-    if (topTracksUser2.includes(track)) {
-      commonUsersData.tracks.push(track)
-    }
-  })
+  try {
+    users[0].topTracks.items.forEach((el: any) => {
+      if (users[1].topTracks.items.map((e: any) => e.name).includes(el.name)) {
+        console.log({ el })
+        commonUsersData.tracks.push(el)
+      }
+    })
+  } catch (e) {
+    console.log({ e })
+  }
 
   const artistsIds1 = users[0].topArtists.items.map((e: any) => e.id)
   const artistsIds2 = users[1].topArtists.items.map((e: any) => e.id)
@@ -89,8 +95,7 @@ const getCommonUsersData = async (users: Array<any>): Promise<iCommonUsersData> 
 
   Object.keys(genres1).forEach((e) => {
     if (genres1[e] > 2 && Object.keys(genres2).includes(e)) {
-      if(genres2[e] > 2)
-        commonUsersData.genres.push(e)
+      if (genres2[e] > 2) commonUsersData.genres.push(e)
     }
   })
 

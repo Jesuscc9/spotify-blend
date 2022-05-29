@@ -6,13 +6,13 @@ import { Link } from 'react-router-dom'
 import roomActions from '../../store/room/actions'
 import { ProfileImage, Particles } from '../../components'
 import { RootStateType } from '../../store'
-import { AnimatePresence, motion } from 'framer-motion'
-import { spotifyApi } from '../../spotifyApi'
+import { motion } from 'framer-motion'
 import { getCommonUsersData } from '../../helpers'
 import { iCommonUsersData } from '../../types'
+import { RoomStateType } from '../../store/room/reducer'
 
 export const Blend = () => {
-  const { roomId }: any = useParams()
+  const { roomId }: { roomId: string } = useParams()
 
   const dispatch = useDispatch()
 
@@ -27,7 +27,8 @@ export const Blend = () => {
       roomActions.connectRoom({
         user,
         roomId,
-        onUpdateRoom: (room: string) => dispatch(roomActions.updateRoom(room)),
+        onUpdateRoom: (room: RoomStateType) =>
+          dispatch(roomActions.updateRoom(room)),
         onBlendingRoom: () => {
           dispatch(roomActions.setRoomStatus('blending'))
 
@@ -61,16 +62,12 @@ export const Blend = () => {
         Back
       </Link>
 
-      {room?.status === 'finished' && <BlendedRoom users={room.users} />}
+      {room?.status === 'finished' && <BlendedRoom />}
 
       {/* {room?.status === "blending" && <BlendingRoom users={room.users} />} */}
 
       {!loading ? (
-        <BlendRoom
-          room={room}
-          roomId={roomId}
-          handleBlendClick={handleBlendClick}
-        />
+        <BlendRoom handleBlendClick={handleBlendClick} />
       ) : (
         <div>necesito un loadeeerrr...</div>
       )}
@@ -80,15 +77,15 @@ export const Blend = () => {
 }
 
 interface BlendRoomProps {
-  room: any
-  roomId: string
-  handleBlendClick: any
+  handleBlendClick: () => void
 }
 
-const BlendRoom = ({ room, roomId, handleBlendClick }: BlendRoomProps) => {
+const BlendRoom = ({ handleBlendClick }: BlendRoomProps) => {
+  const room = useSelector((state: RootStateType) => state.room)
+
   return (
     <>
-      <div className="my-10">New blend on room: {roomId}</div>
+      <div className="my-10">Room ID: {room.id}</div>
 
       {/* {room.status == "ready" && room?.activeUsers === 2 && ( */}
       <button className="btn-primary" onClick={handleBlendClick}>
@@ -100,7 +97,7 @@ const BlendRoom = ({ room, roomId, handleBlendClick }: BlendRoomProps) => {
         className="container my-20 flex justify-between flex-wrap"
         layoutId="parent-container"
       >
-        {room.users.map((user: any, i: number) => (
+        {room.users.map((user, i: number) => (
           <ProfileImage
             key={i}
             src={user.images[0].url}
@@ -113,11 +110,11 @@ const BlendRoom = ({ room, roomId, handleBlendClick }: BlendRoomProps) => {
   )
 }
 
-interface BlendedRoomProps {
-  users: any
-}
+const BlendedRoom = () => {
+  const room = useSelector((state: RootStateType) => state.room)
 
-const BlendedRoom = ({ users }: BlendedRoomProps) => {
+  const { users } = room
+
   //TODO: Migrate this common data to global store on redux with saga actions
   const [commonData, setCommonData] = useState<iCommonUsersData>({
     tracks: [],
@@ -134,7 +131,7 @@ const BlendedRoom = ({ users }: BlendedRoomProps) => {
   }, [])
 
   return (
-    <AnimatePresence>
+    <>
       <motion.div className="container border flex" layoutId="parent-container">
         {users.map((user: any, i: number) => (
           <motion.div
@@ -152,17 +149,17 @@ const BlendedRoom = ({ users }: BlendedRoomProps) => {
         ))}
       </motion.div>
       <h1>SONGS IN COMMON</h1>
-      {tracks.map((e: string, i) => (
-        <p key={e}>{e}</p>
+      {tracks.map((e: any, i: number) => (
+        <p key={i}>{e.name}</p>
       ))}
       <h1>ARTISTS IN COMMON</h1>
-      {artists.map((e: string, i) => (
-        <p key={e}>{e}</p>
+      {artists.map((e: any, i) => (
+        <p key={i}>{e.name}</p>
       ))}
-      <h1>GENRES IN COMMON</h1>
-      {genres.map((e: string, i) => (
-        <p key={e}>{e}</p>
-      ))}
-    </AnimatePresence>
+      {/* <h1>GENRES IN COMMON</h1>
+      {genres.map((e: any, i) => (
+        <p key={i}>{e}</p>
+      ))} */}
+    </>
   )
 }

@@ -1,26 +1,27 @@
-import authActions from "./actions"; import { ActionType } from "../../types";
+import authActions from './actions'
+import { ActionType } from '../../types'
 
 interface AuthStateType {
-  isAuth: boolean;
-  data: any;
+  isAuth: boolean
+  data: any
 }
 
 const initialState: AuthStateType = {
   isAuth: false,
-  data: {},
-};
+  data: {}
+}
 
-const reducer = (state = initialState, action: any): AuthStateType => {
-  const { payload, type } = action;
+const reducer = (state = initialState, action: ActionType): AuthStateType => {
+  const { payload, type } = action
 
   switch (type) {
     case authActions.SET_DATA:
-      return { ...state, isAuth: true, data: payload };
+      return { ...state, isAuth: true, data: payload }
     case authActions.LOGOUT:
-      return state;
+      return state
     default:
-      return state;
+      return state
   }
-};
+}
 
-export default reducer;
+export default reducer
